@@ -1,90 +1,114 @@
-var trex, trex_running, trex_collided;
-var ground, invisibleGround, groundImage;
-
-
-
-
-var score;
+var garden,rabbit,apple,orangeL,redL;
+var gardenImg,rabbitImg,carrotImg,orangeImg,redImg;
 
 
 function preload(){
-  trex_running = loadAnimation("trex1.png","trex2.png","trex3.png");
-  cloud_image = loadImage("cloud.png");
-  trex_collided = loadImage("trex_collided.png");
-  
-  groundImage = loadImage("ground2.png");
-  
- 
-  
+  gardenImg = loadImage("garden.png");
+  rabbitImg = loadImage("rabbit.png");
+  appleImg = loadImage("apple.png");
+  orangeImg = loadImage("orangeLeaf.png");
+  redImg = loadImage("redImage.png");
 }
 
-function setup() {
 
-  createCanvas(600,200)
+function setup(){
   
-  //create a trex sprite
-  trex = createSprite(50,160,20,50);
-  trex.addAnimation("running", trex_running);
-  trex.scale = 0.5;
-  
-  //create a ground sprite
-  ground = createSprite(200,180,400,20);
-  ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
-  ground.velocityX = -4;
-  
-  //creating invisible ground
-  invisibleGround = createSprite(200,190,400,10);
-  invisibleGround.visible = false;
-  
-  //generate random numbers
-  var rand =  Math.round(random(1,100))
-  console.log(rand)
+  createCanvas(400,400);
+// Moving background
+garden=createSprite(200,200);
+garden.addImage(gardenImg);
 
+
+//creating boy running
+rabbit = createSprite(160,340,20,20);
+rabbit.scale =0.09;
+rabbit.addImage(rabbitImg);
 }
 
 function draw() {
-  //set background color
-  background(180);
+  background(0);
   
-  //console.log(trex.y)
+  // boy moving on Xaxis with mouse'
+  rabbit.x = World.mouseX;
   
+  edges= createEdgeSprites();
+  rabbit.collide(edges);
   
+   drawSprites();
+   
   
-  // jump when the space key is pressed
-  if(keyDown("space")&& trex.y >= 100) {
-    trex.velocityY = -10;
-  }
+ //var select_sprites = Math(random(1,3));
+
+ // var select_sprites = Math.random(random(1,3));
+
+ // var select_sprites = Math.round(1,3);
+
+  var select_sprites = Math.round(random(1,3));
+
   
-  trex.velocityY = trex.velocityY + 0.8
+    if (frameCount % 50 == 0) {
+      if (select_sprites == 1) {
+       createApples();
+     } else if (select_sprites == 2) {
+       createOrange();
+     }else {
+       createRed();
+      }
+    }
+
+  // if (frameCount % 80 == 0) {
+  //   if (select_sprites == 1) {
+  //     createApples();
+  //   } else if (select_sprites == 2) {
+  //     createOrange();
+  //   }
+  // }
+
+    //  if (frameCount / 80 == 0) {
+    //    if (select_sprites == 1) {
+    //     createApples();
+    //   } else if (select_sprites == 2) {
+    //     createOrange();
+    //    }else {
+    //     createRed();
+   //   }
+     }
+
+  // if (frameCount % 80 = 0) {
+  //   if (select_sprites == 1) {
+  //     createApples();
+  //   } else if (select_sprites == 2) {
+  //     createOrange();
+  //   }else {
+  //     createRed();
+  //   }
+  // }
+
+
+
+
+
+function createApples() {
+apple = createSprite(random(50, 350),40, 10, 10);
+apple.addImage(appleImg);
+apple.scale=0.07;
+apple.velocityY = 3;
+apple.lifetime = 150;
   
-  if (ground.x < 0){
-    ground.x = ground.width/2;
-  }
-  
-  //stop trex from falling down
-  trex.collide(invisibleGround);
-  
-  //Spawn Clouds
-  spawnClouds()
-  
-  drawSprites();
 }
 
-//function to spawn the clouds
-function spawnClouds(){
-  if (frameCount % 60 === 0) {
-  
- // write your code here 
- var cloud = createSprite(600,50,40,20);
- cloud.velocityX = -3;
- console.log(World.frameCount)
- cloud.addImage(cloud_image)
- cloud.y = Math.round(random(10,60))
- cloud.depth = trex.depth;
- trex.depth = trex.depth+1;
-
-}
+function createOrange() {
+orangeL = createSprite(random(50, 350),40, 10, 10);
+orangeL.addImage(orangeImg);
+orangeL.scale=0.08;
+orangeL.velocityY = 3;
+orangeL.lifetime = 150;
 }
 
-
+function createRed() {
+redL = createSprite(random(50, 350),40, 10, 10);
+redL.addImage(redImg);
+redL.scale=0.06;
+  redL.velocityY = 3;
+  redL.lifetime = 150;
+}
